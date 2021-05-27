@@ -43,6 +43,20 @@ export MAPBOXTOKEN=<MapBox Token>
 ![Weather Radar Map flow](screenshots/TWC-WeatherRadarMap-flow.png?raw=true "Weather Radar Map flow")
 ---
 
+## Build a Node-RED Docker Container
+
+Take a look at the `Dockerfile` and `Makefile` to build a Docker container which will run
+Node-RED and this flow.  Store the API key credentials in a .env file. Modify the Dockerfile to include your Docker userid.
+
+```sh
+make build
+make run
+make test
+make ui
+make stop
+make clean
+```
+
 ### Authors
 
 - [John Walicki](https://github.com/johnwalicki)
