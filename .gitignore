@@ -1,3 +1,8 @@
+# Secrets
+secrets.sh
+.radarmap-flows.json.backup
+.radarmap-flows_cred.json.backup
+
 # Logs
 logs
 *.log

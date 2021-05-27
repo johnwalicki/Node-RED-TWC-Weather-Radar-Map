@@ -1,0 +1,17 @@
+{
+    "name": "Node-RED-TWC-Weather-Radar-Map",
+    "description": "Node-RED Dashboard which displays a time-lapse North America Satellite / Radar Weather map using the TWC weather apis",
+    "version": "1.0.0",
+    "dependencies": {
+        "node-red-contrib-image-tools": "1.4.0",
+        "node-red-dashboard": "2.29.0",
+        "node-red-node-base64": "0.2.1",
+        "node-red-contrib-twc-weather": "0.4.1"
+    },
+    "node-red": {
+        "settings": {
+            "flowFile": "radarmap-flows.json",
+            "credentialsFile": "radarmap-flows_cred.json"
+        }
+    }
+}
