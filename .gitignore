@@ -1,5 +1,6 @@
 # Secrets
 secrets.sh
+Dockerfile.erbium
 .radarmap-flows.json.backup
 .radarmap-flows_cred.json.backup
 .env

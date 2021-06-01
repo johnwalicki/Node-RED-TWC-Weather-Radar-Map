@@ -6,8 +6,8 @@ IMG_VERSION:="1.0.0"
 ARCH:="amd64"
 
 # Store the secrets in a .env file  (see ./.env.example)
-# or modify the Makefile "run" rule below to run the 
-#   docker container with -e environment variables 
+# or modify the Makefile "run" rule below to run the
+#   docker container with -e environment variables
 # or store them directly in the Dockerfile
 TWCAPIKEY:=
 MAPBOXTOKEN:=
