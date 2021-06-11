@@ -46,7 +46,23 @@ export MAPBOXTOKEN=<MapBox Token>
 ## Build a Node-RED Docker Container
 
 Take a look at the `Dockerfile` and `Makefile` to build a Docker container which will run
-Node-RED and this flow.  Store the API key credentials in a .env file. Modify the Dockerfile to include your Docker userid.
+Node-RED and this flow. 
+
+Copy the `.env.example` to `.env`  Then store your API key credentials in the `.env` file.
+
+```sh
+# Environment variables
+TWCAPIKEY=
+MAPBOXTOKEN=
+```
+
+Modify the Dockerfile to include your Docker userid.
+
+```sh
+DOCKERHUB_ID:=<your Docker Hub ID>
+```
+
+To build/run/test the container, run some of these `make` commands:
 
 ```sh
 make build
