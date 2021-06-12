@@ -19,7 +19,8 @@ CONTAINER_CREDS:=
 default: build run
 
 build:
-	docker build -t $(DOCKERHUB_ID)/$(IMG_NAME):$(IMG_VERSION) .
+	docker build --rm -t $(DOCKERHUB_ID)/$(IMG_NAME):$(IMG_VERSION) .
+	docker image prune --filter label=stage=builder --force
 
 dev: stop build
 	docker run -it --name ${IMG_NAME} \

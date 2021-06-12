@@ -1,5 +1,10 @@
-FROM registry.access.redhat.com/ubi8/nodejs-14-minimal:latest as build
+FROM registry.access.redhat.com/ubi8:8.4 as build
+LABEL stage=builder
 
+RUN  dnf module install --nodocs -y nodejs:14 python39 --setopt=install_weak_deps=0 --disableplugin=subscription-manager \
+    && dnf install --nodocs -y make gcc gcc-c++  --setopt=install_weak_deps=0 --disableplugin=subscription-manager \
+    && dnf clean all --disableplugin=subscription-manager
+    
 RUN mkdir -p /opt/app-root/data
 WORKDIR /opt/app-root/data
 COPY ./package.json /opt/app-root/data/package.json
