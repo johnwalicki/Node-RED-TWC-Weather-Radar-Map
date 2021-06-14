@@ -1,8 +1,8 @@
 [
     {
-        "id": "d6bc0b94.367f98",
+        "id": "b0be1fc9.070ab8",
         "type": "tab",
-        "label": "Radar Weather Map",
+        "label": "TWC Weather Maps",
         "disabled": false,
         "info": ""
     },
@@ -14,35 +14,6 @@
         "info": ""
     },
     {
-        "id": "b2ff2149.9d877",
-        "type": "ui_group",
-        "name": "Radar Weather Map",
-        "tab": "39ac6014.b5548",
-        "order": 2,
-        "disp": true,
-        "width": "16",
-        "collapse": false
-    },
-    {
-        "id": "803ad1f.133603",
-        "type": "ui_group",
-        "name": "Refresh",
-        "tab": "39ac6014.b5548",
-        "order": 1,
-        "disp": true,
-        "width": "6",
-        "collapse": false
-    },
-    {
-        "id": "39ac6014.b5548",
-        "type": "ui_tab",
-        "name": "North America Radar Map",
-        "icon": "fa-thermometer-full",
-        "order": 14,
-        "disabled": false,
-        "hidden": false
-    },
-    {
         "id": "402a1ff0.879a28",
         "type": "ui_base",
         "theme": {
@@ -51,7 +22,8 @@
                 "default": "#0094CE",
                 "baseColor": "#0094CE",
                 "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                "edited": false
+                "edited": true,
+                "reset": false
             },
             "darkTheme": {
                 "default": "#097479",
@@ -138,9 +110,78 @@
         }
     },
     {
-        "id": "37fbd842.07a7f8",
+        "id": "e3833dd0.24f7f",
+        "type": "ui_tab",
+        "name": "North America Weather Maps",
+        "icon": "fa-thermometer-full",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "b013df34.10652",
+        "type": "ui_group",
+        "name": "Refresh",
+        "tab": "e3833dd0.24f7f",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "3f163f48.099af",
+        "type": "ui_group",
+        "name": "Weather Maps",
+        "tab": "e3833dd0.24f7f",
+        "order": 2,
+        "disp": true,
+        "width": "16",
+        "collapse": false
+    },
+    {
+        "id": "ee92b6b5.2c19c8",
+        "type": "comment",
+        "z": "12cdb8c5.b484af",
+        "name": "Get a TWC Weather API Key",
+        "info": "",
+        "x": 140,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "acb3023f.287a9",
+        "type": "comment",
+        "z": "12cdb8c5.b484af",
+        "name": "Weather Company Data - Enhanced Current Conditions https://ibm.co/TWCecc",
+        "info": "",
+        "x": 300,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "7a2d30c8.c2add8",
+        "type": "comment",
+        "z": "12cdb8c5.b484af",
+        "name": "https://ibm.co/v2EHCg",
+        "info": "",
+        "x": 140,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "95f295d4.6fca1",
+        "type": "comment",
+        "z": "12cdb8c5.b484af",
+        "name": "https://developer.ibm.com/callforcode/tools/weather/",
+        "info": "",
+        "x": 230,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "c316fa30.0a46f",
         "type": "inject",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Test Radar Weather Map",
         "props": [],
         "repeat": "",
@@ -152,14 +193,14 @@
         "y": 40,
         "wires": [
             [
-                "fcd423b9.a900d8"
+                "c6335c0c.65977"
             ]
         ]
     },
     {
-        "id": "6c512b48.b33a8c",
+        "id": "b3414891.8fb4d",
         "type": "http request",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Get Tiler Server Info",
         "method": "GET",
         "ret": "obj",
@@ -169,21 +210,21 @@
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 520,
+        "x": 580,
         "y": 100,
         "wires": [
             [
-                "169486ee.f939e9",
-                "3194631f.a8b224"
+                "d3b1b7e.70e75c8",
+                "f7277749.9a2d9"
             ]
         ]
     },
     {
-        "id": "169486ee.f939e9",
+        "id": "f7277749.9a2d9",
         "type": "function",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": " Playback 3 hours of tile History",
-        "func": "var count;\nfor( count = msg.payload.seriesInfo.satrad.series.length - 1; count >= 0 ; count-- ) {\n    var newmsg = {};\n    newmsg.twcapikey = msg.twcapikey;\n    newmsg.tile_ts = msg.payload.seriesInfo.satrad.series[count].ts;\n    node.send(newmsg);\n}\nreturn null;",
+        "func": "var count;\nvar maptype = flow.get(\"maptype\")||\"satrad\";\n\nfor( count = msg.payload.seriesInfo[maptype].series.length - 1; count >= 0 ; count-- ) {\n    var newmsg = {};\n    newmsg.twcapikey = msg.twcapikey;\n    newmsg.maptype = maptype;\n    newmsg.tile_ts = msg.payload.seriesInfo[maptype].series[count].ts;\n    node.send(newmsg);\n}\nreturn null;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -193,14 +234,14 @@
         "y": 180,
         "wires": [
             [
-                "d1f00866.642948"
+                "78d14678.a5b478"
             ]
         ]
     },
     {
-        "id": "1c78bc2.b51b144",
+        "id": "d1c0944.c863668",
         "type": "debug",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -210,14 +251,14 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 730,
+        "x": 650,
         "y": 180,
         "wires": []
     },
     {
-        "id": "d1f00866.642948",
+        "id": "78d14678.a5b478",
         "type": "delay",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "pauseType": "rate",
         "timeout": "5",
@@ -233,31 +274,32 @@
         "y": 180,
         "wires": [
             [
-                "1c78bc2.b51b144",
-                "4b93310f.8bd7a"
+                "d1c0944.c863668",
+                "f54ea084.0e35a8"
             ]
         ]
     },
     {
-        "id": "3194631f.a8b224",
+        "id": "d3b1b7e.70e75c8",
         "type": "debug",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 750,
+        "x": 810,
         "y": 100,
         "wires": []
     },
     {
-        "id": "c70019ed.276f18",
+        "id": "50190f1f.8afc3",
         "type": "comment",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Loop North America map tiles ",
         "info": "",
         "x": 200,
@@ -265,9 +307,9 @@
         "wires": []
     },
     {
-        "id": "21fea4c9.42eb7c",
+        "id": "213c5a7.a3a5f26",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Tile 1",
         "data": "payload",
         "dataType": "msg",
@@ -298,18 +340,18 @@
             "description": "Just loads the image.",
             "parameters": []
         },
-        "x": 350,
+        "x": 370,
         "y": 300,
         "wires": [
             [
-                "c0184a93.6e8b"
+                "15af19a7.bfc056"
             ]
         ]
     },
     {
-        "id": "358d00bd.34c9e",
+        "id": "43376b15.86d7e4",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Tile 2",
         "data": "payload",
         "dataType": "msg",
@@ -340,18 +382,18 @@
             "description": "Just loads the image.",
             "parameters": []
         },
-        "x": 350,
+        "x": 370,
         "y": 360,
         "wires": [
             [
-                "851fe577.71573"
+                "e33b1bbe.d171a"
             ]
         ]
     },
     {
-        "id": "c661fdb1.30f7c8",
+        "id": "13be4230.e97f8e",
         "type": "function",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "new img params",
         "func": "msg.width3 = msg.width1 + msg.width2;\nmsg.height3 = Math.max(msg.height1, + msg.height2);\nmsg.payload = {w: msg.width3, h: msg.height3}\nreturn msg;",
         "outputs": 1,
@@ -363,14 +405,14 @@
         "y": 420,
         "wires": [
             [
-                "9c7883cd.ff5368"
+                "3c7b98de.a68c88"
             ]
         ]
     },
     {
-        "id": "9c7883cd.ff5368",
+        "id": "3c7b98de.a68c88",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "North America",
         "data": "payload",
         "dataType": "msg",
@@ -405,14 +447,14 @@
         "y": 420,
         "wires": [
             [
-                "ebfd5eca.b9688"
+                "feac91c.1fb087"
             ]
         ]
     },
     {
-        "id": "ebfd5eca.b9688",
+        "id": "feac91c.1fb087",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "blit Tile 1",
         "data": "image3",
         "dataType": "msg",
@@ -492,14 +534,14 @@
         "y": 420,
         "wires": [
             [
-                "f3d3866e.861d98"
+                "9bbd8ae8.9b8b2"
             ]
         ]
     },
     {
-        "id": "b5326d9d.a49948",
+        "id": "264356ff.152d9a",
         "type": "image viewer",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "width": "256",
         "data": "payload",
@@ -511,9 +553,9 @@
         ]
     },
     {
-        "id": "f3d3866e.861d98",
+        "id": "9bbd8ae8.9b8b2",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "blit Tile 2",
         "data": "image3",
         "dataType": "msg",
@@ -593,20 +635,20 @@
         "y": 420,
         "wires": [
             [
-                "b5326d9d.a49948",
-                "8db919a9.ffec38"
+                "264356ff.152d9a",
+                "eae9268d.402638"
             ]
         ]
     },
     {
-        "id": "4b93310f.8bd7a",
+        "id": "f54ea084.0e35a8",
         "type": "http request",
-        "z": "d6bc0b94.367f98",
-        "name": "Get Radar tile 0:1:2",
+        "z": "b0be1fc9.070ab8",
+        "name": "Get TWC map tile 0:1:2",
         "method": "GET",
         "ret": "bin",
         "paytoqs": "ignore",
-        "url": "https://api.weather.com/v3/TileServer/tile/satrad?ts={{tile_ts}}&xyz=0:1:2&apiKey={{twcapikey}}",
+        "url": "https://api.weather.com/v3/TileServer/tile/{{maptype}}?ts={{tile_ts}}&xyz=0:1:2&apiKey={{twcapikey}}",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -615,19 +657,19 @@
         "y": 300,
         "wires": [
             [
-                "21fea4c9.42eb7c"
+                "213c5a7.a3a5f26"
             ]
         ]
     },
     {
-        "id": "1e3d1f8d.94dac",
+        "id": "cb05eef4.c13ea",
         "type": "http request",
-        "z": "d6bc0b94.367f98",
-        "name": "Get Radar tile 1:1:2",
+        "z": "b0be1fc9.070ab8",
+        "name": "Get TWC map tile 1:1:2",
         "method": "GET",
         "ret": "bin",
         "paytoqs": "ignore",
-        "url": "https://api.weather.com/v3/TileServer/tile/satrad?ts={{tile_ts}}&xyz=1:1:2&apiKey={{twcapikey}}",
+        "url": "https://api.weather.com/v3/TileServer/tile/{{maptype}}?ts={{tile_ts}}&xyz=1:1:2&apiKey={{twcapikey}}",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -636,14 +678,14 @@
         "y": 360,
         "wires": [
             [
-                "358d00bd.34c9e"
+                "43376b15.86d7e4"
             ]
         ]
     },
     {
-        "id": "c0184a93.6e8b",
+        "id": "15af19a7.bfc056",
         "type": "change",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Get Tile 1 Size",
         "rules": [
             {
@@ -666,18 +708,18 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 520,
+        "x": 540,
         "y": 300,
         "wires": [
             [
-                "1e3d1f8d.94dac"
+                "cb05eef4.c13ea"
             ]
         ]
     },
     {
-        "id": "851fe577.71573",
+        "id": "e33b1bbe.d171a",
         "type": "change",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Get Tile 2 Size",
         "rules": [
             {
@@ -700,23 +742,23 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 520,
+        "x": 540,
         "y": 360,
         "wires": [
             [
-                "c661fdb1.30f7c8"
+                "13be4230.e97f8e"
             ]
         ]
     },
     {
-        "id": "5fde8409.6b1da4",
+        "id": "af1fa775.7dba08",
         "type": "ui_template",
-        "z": "d6bc0b94.367f98",
-        "group": "b2ff2149.9d877",
+        "z": "b0be1fc9.070ab8",
+        "group": "3f163f48.099af",
         "name": "",
-        "order": 0,
+        "order": 2,
         "width": "16",
-        "height": "8",
+        "height": "9",
         "format": "<div ng-bind-html></div>\n<img alt=\"world map\" src=\"{{msg.payload}}\"/>",
         "storeOutMessages": true,
         "fwdInMessages": true,
@@ -729,36 +771,36 @@
         ]
     },
     {
-        "id": "f65b8931.9f82e",
+        "id": "ac871ee2.009d4",
         "type": "ui_button",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
-        "group": "803ad1f.133603",
-        "order": 0,
+        "group": "b013df34.10652",
+        "order": 2,
         "width": 0,
         "height": 0,
         "passthru": false,
-        "label": "Refresh",
+        "label": "Play Recent Images",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
-        "icon": "",
+        "icon": "fa-play",
         "payload": "",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
-        "x": 120,
+        "x": 140,
         "y": 100,
         "wires": [
             [
-                "fcd423b9.a900d8"
+                "c6335c0c.65977"
             ]
         ]
     },
     {
-        "id": "fcd423b9.a900d8",
+        "id": "c6335c0c.65977",
         "type": "change",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "TWC API Key",
         "rules": [
             {
@@ -774,18 +816,18 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 300,
+        "x": 360,
         "y": 100,
         "wires": [
             [
-                "6c512b48.b33a8c"
+                "b3414891.8fb4d"
             ]
         ]
     },
     {
-        "id": "6ae72f04.2cf018",
+        "id": "a9f30293.7a1738",
         "type": "comment",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "North American Radar",
         "info": "\nhttps://api.weather.com/v3/TileServer/tile/radar?ts=1520428200&xyz={col}:{row}:{level}&apiKey=YOURAPIKEY",
         "x": 500,
@@ -793,9 +835,9 @@
         "wires": []
     },
     {
-        "id": "8db919a9.ffec38",
+        "id": "eae9268d.402638",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Composite North America Radar ",
         "data": "payload",
         "dataType": "msg",
@@ -872,15 +914,15 @@
         "y": 200,
         "wires": [
             [
-                "bb643e94.b77fd8",
-                "6f84b629.0857d8"
+                "6e442fe4.4ebd7",
+                "5c7b852b.5ac31c"
             ]
         ]
     },
     {
-        "id": "bb643e94.b77fd8",
+        "id": "6e442fe4.4ebd7",
         "type": "image viewer",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "width": "256",
         "data": "radarmap",
@@ -892,9 +934,9 @@
         ]
     },
     {
-        "id": "6f84b629.0857d8",
+        "id": "5c7b852b.5ac31c",
         "type": "function",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "func": "msg.payload = \"data:image/jpg;base64,\"+msg.radarmap;\nmsg.payload = msg.radarmap;\nreturn msg;",
         "outputs": 1,
@@ -906,14 +948,14 @@
         "y": 200,
         "wires": [
             [
-                "5fde8409.6b1da4"
+                "af1fa775.7dba08"
             ]
         ]
     },
     {
-        "id": "acb5bd1f.432b3",
+        "id": "3f1ddb73.81a30c",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "baselayer 01",
         "data": "payload",
         "dataType": "msg",
@@ -948,14 +990,14 @@
         "y": 540,
         "wires": [
             [
-                "7e430d4b.350e4c"
+                "a0803a57.2d94a8"
             ]
         ]
     },
     {
-        "id": "1b2e5058.2f29c8",
+        "id": "48eb9b10.f9549c",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "baselayer 11",
         "data": "payload",
         "dataType": "msg",
@@ -990,14 +1032,14 @@
         "y": 600,
         "wires": [
             [
-                "bfb7d5ea.e8cda"
+                "18f9a841.594938"
             ]
         ]
     },
     {
-        "id": "1d2e62e2.cd218d",
+        "id": "c4bae9a8.973038",
         "type": "function",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "new img params",
         "func": "msg.width3 = msg.width01 + msg.width11;\nmsg.height3 = Math.max(msg.height01, + msg.height11);\nmsg.payload = {w: msg.width3, h: msg.height3}\nreturn msg;",
         "outputs": 1,
@@ -1009,15 +1051,15 @@
         "y": 660,
         "wires": [
             [
-                "d6e4435d.55af7",
-                "ffccd5ac.7f532"
+                "1f4fc030.cf2d78",
+                "57fe2ff9.0e4088"
             ]
         ]
     },
     {
-        "id": "d4ab858d.60ba6",
+        "id": "bc1abe.1fcdad4",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "blit Tile 01",
         "data": "image3",
         "dataType": "msg",
@@ -1097,14 +1139,14 @@
         "y": 660,
         "wires": [
             [
-                "e58de2f8.637508"
+                "8f17cdd4.f25e28"
             ]
         ]
     },
     {
-        "id": "e58de2f8.637508",
+        "id": "8f17cdd4.f25e28",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "blit Tile 11",
         "data": "image3",
         "dataType": "msg",
@@ -1184,14 +1226,14 @@
         "y": 660,
         "wires": [
             [
-                "e636209b.3bf348"
+                "28c866c1.be0552"
             ]
         ]
     },
     {
-        "id": "d4cc2eac.be1a48",
+        "id": "6c7f85ca.c83534",
         "type": "http request",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Get a MapBox tile 2:0:1",
         "method": "GET",
         "ret": "bin",
@@ -1205,14 +1247,14 @@
         "y": 540,
         "wires": [
             [
-                "97bc63db.f2982"
+                "81a463ed.50aa98"
             ]
         ]
     },
     {
-        "id": "7cb4f485.7b51f4",
+        "id": "a591c63a.b06268",
         "type": "http request",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Get a MapBox tile 2:1:1",
         "method": "GET",
         "ret": "bin",
@@ -1226,14 +1268,14 @@
         "y": 600,
         "wires": [
             [
-                "d3d9d927.476a8"
+                "881b0264.9e5238"
             ]
         ]
     },
     {
-        "id": "7e430d4b.350e4c",
+        "id": "a0803a57.2d94a8",
         "type": "change",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Get Tile 01 Size",
         "rules": [
             {
@@ -1260,14 +1302,14 @@
         "y": 540,
         "wires": [
             [
-                "7cb4f485.7b51f4"
+                "a591c63a.b06268"
             ]
         ]
     },
     {
-        "id": "bfb7d5ea.e8cda",
+        "id": "18f9a841.594938",
         "type": "change",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Get Tile 11 Size",
         "rules": [
             {
@@ -1294,14 +1336,14 @@
         "y": 600,
         "wires": [
             [
-                "1d2e62e2.cd218d"
+                "c4bae9a8.973038"
             ]
         ]
     },
     {
-        "id": "97bc63db.f2982",
+        "id": "81a463ed.50aa98",
         "type": "base64",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "action": "",
         "property": "payload",
@@ -1309,14 +1351,14 @@
         "y": 540,
         "wires": [
             [
-                "acb5bd1f.432b3"
+                "3f1ddb73.81a30c"
             ]
         ]
     },
     {
-        "id": "d3d9d927.476a8",
+        "id": "881b0264.9e5238",
         "type": "base64",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "action": "",
         "property": "payload",
@@ -1324,14 +1366,14 @@
         "y": 600,
         "wires": [
             [
-                "1b2e5058.2f29c8"
+                "48eb9b10.f9549c"
             ]
         ]
     },
     {
-        "id": "3968a260.1b5fce",
+        "id": "fdee4fd3.b6b66",
         "type": "inject",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Set MapBox API token",
         "props": [
             {
@@ -1349,14 +1391,14 @@
         "y": 500,
         "wires": [
             [
-                "d4cc2eac.be1a48"
+                "6c7f85ca.c83534"
             ]
         ]
     },
     {
-        "id": "e636209b.3bf348",
+        "id": "28c866c1.be0552",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Resize",
         "data": "image3",
         "dataType": "msg",
@@ -1410,16 +1452,16 @@
         "y": 660,
         "wires": [
             [
-                "49ffd373.50462c",
-                "9e769a2.6125ae8",
-                "82aefb1d.ef14c"
+                "57421e55.446dd8",
+                "da432bd6.4353b8",
+                "d05e54af.cc94f8"
             ]
         ]
     },
     {
-        "id": "d6e4435d.55af7",
+        "id": "1f4fc030.cf2d78",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "North America",
         "data": "payload",
         "dataType": "msg",
@@ -1454,14 +1496,14 @@
         "y": 660,
         "wires": [
             [
-                "d4ab858d.60ba6"
+                "bc1abe.1fcdad4"
             ]
         ]
     },
     {
-        "id": "49ffd373.50462c",
+        "id": "57421e55.446dd8",
         "type": "change",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Save Baselayer",
         "rules": [
             {
@@ -1481,14 +1523,14 @@
         "y": 700,
         "wires": [
             [
-                "62254486.fa3ecc"
+                "71e463db.b1d554"
             ]
         ]
     },
     {
-        "id": "82aefb1d.ef14c",
+        "id": "d05e54af.cc94f8",
         "type": "image viewer",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "baselayer",
         "width": "256",
         "data": "baselayer",
@@ -1500,9 +1542,9 @@
         ]
     },
     {
-        "id": "9d20d02a.404a2",
+        "id": "2bc49fa2.ac70e",
         "type": "inject",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "View baselayer",
         "props": [
             {
@@ -1524,14 +1566,14 @@
         "y": 740,
         "wires": [
             [
-                "82aefb1d.ef14c"
+                "d05e54af.cc94f8"
             ]
         ]
     },
     {
-        "id": "62254486.fa3ecc",
+        "id": "71e463db.b1d554",
         "type": "debug",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -1545,9 +1587,9 @@
         "wires": []
     },
     {
-        "id": "ffccd5ac.7f532",
+        "id": "57fe2ff9.0e4088",
         "type": "debug",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -1561,9 +1603,9 @@
         "wires": []
     },
     {
-        "id": "9e769a2.6125ae8",
+        "id": "da432bd6.4353b8",
         "type": "jimp-image",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "base64",
         "data": "payload",
         "dataType": "msg",
@@ -1598,14 +1640,14 @@
         "y": 660,
         "wires": [
             [
-                "5fde8409.6b1da4"
+                "af1fa775.7dba08"
             ]
         ]
     },
     {
-        "id": "e22d9b21.69426",
+        "id": "8621d9f5.62b8b",
         "type": "comment",
-        "z": "d6bc0b94.367f98",
+        "z": "b0be1fc9.070ab8",
         "name": "Load North America baselayer from Mapbox",
         "info": "",
         "x": 490,
@@ -1613,43 +1655,107 @@
         "wires": []
     },
     {
-        "id": "ee92b6b5.2c19c8",
-        "type": "comment",
-        "z": "12cdb8c5.b484af",
-        "name": "Get a TWC Weather API Key",
-        "info": "",
-        "x": 140,
-        "y": 120,
-        "wires": []
+        "id": "401300d9.221e5",
+        "type": "ui_multistate_switch",
+        "z": "b0be1fc9.070ab8",
+        "name": "Choose Map Type",
+        "group": "3f163f48.099af",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "stateField": "payload",
+        "enableField": "enable",
+        "rounded": false,
+        "useThemeColors": true,
+        "hideSelectedLabel": false,
+        "options": [
+            {
+                "label": "Radar",
+                "value": "satrad",
+                "valueType": "str",
+                "color": "#009933"
+            },
+            {
+                "label": "Temperature",
+                "value": "temp",
+                "valueType": "str",
+                "color": "#999999"
+            },
+            {
+                "label": "24hr Temp Change",
+                "value": "tempChange",
+                "valueType": "str",
+                "color": "#ff6666"
+            },
+            {
+                "label": "UV",
+                "value": "uv",
+                "valueType": "str",
+                "color": "#009999"
+            },
+            {
+                "label": "Wind",
+                "value": "windSpeed",
+                "valueType": "str",
+                "color": "#cccc00"
+            },
+            {
+                "label": "Feels Like",
+                "value": "feelsLike",
+                "valueType": "str",
+                "color": "#ff33cc"
+            }
+        ],
+        "x": 470,
+        "y": 40,
+        "wires": [
+            [
+                "89410346.d445f8"
+            ]
+        ]
     },
     {
-        "id": "acb3023f.287a9",
-        "type": "comment",
-        "z": "12cdb8c5.b484af",
-        "name": "Weather Company Data - Enhanced Current Conditions https://ibm.co/TWCecc",
-        "info": "",
-        "x": 300,
+        "id": "de5f5ece.91196",
+        "type": "debug",
+        "z": "b0be1fc9.070ab8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
         "y": 40,
         "wires": []
     },
     {
-        "id": "7a2d30c8.c2add8",
-        "type": "comment",
-        "z": "12cdb8c5.b484af",
-        "name": "https://ibm.co/v2EHCg",
-        "info": "",
-        "x": 140,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "95f295d4.6fca1",
-        "type": "comment",
-        "z": "12cdb8c5.b484af",
-        "name": "https://developer.ibm.com/callforcode/tools/weather/",
-        "info": "",
-        "x": 230,
-        "y": 160,
-        "wires": []
+        "id": "89410346.d445f8",
+        "type": "change",
+        "z": "b0be1fc9.070ab8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "maptype",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 690,
+        "y": 40,
+        "wires": [
+            [
+                "de5f5ece.91196"
+            ]
+        ]
     }
 ]
