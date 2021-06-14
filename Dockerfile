@@ -8,11 +8,12 @@ RUN  dnf module install --nodocs -y nodejs:14 python39 --setopt=install_weak_dep
 RUN mkdir -p /opt/app-root/data
 WORKDIR /opt/app-root/data
 COPY ./package.json /opt/app-root/data/package.json
-RUN npm install --only=prod
+RUN npm install --no-audit --no-update-notifier --no-fund --production
 
+RUN rm -rf /opt/app-root/data/node_modules/image-q/demo
 COPY ./server.js /opt/app-root/data/
 COPY ./settings.js /opt/app-root/data/
-COPY ./.env /opt/app-root/data/
+# COPY ./.env /opt/app-root/data/
 COPY ./radarmap-flows.json /opt/app-root/data/flows.json
 COPY ./radarmap-flows_cred.json /opt/app-root/data/flows_cred.json
 
