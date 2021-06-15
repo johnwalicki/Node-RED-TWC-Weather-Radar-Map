@@ -121,7 +121,7 @@
     {
         "id": "b013df34.10652",
         "type": "ui_group",
-        "name": "Refresh",
+        "name": "Weather Maps",
         "tab": "e3833dd0.24f7f",
         "order": 1,
         "disp": true,
@@ -131,10 +131,10 @@
     {
         "id": "3f163f48.099af",
         "type": "ui_group",
-        "name": "Weather Maps",
+        "name": "Maps",
         "tab": "e3833dd0.24f7f",
         "order": 2,
-        "disp": true,
+        "disp": false,
         "width": "16",
         "collapse": false
     },
@@ -780,7 +780,7 @@
         "width": 0,
         "height": 0,
         "passthru": false,
-        "label": "Play Recent Images",
+        "label": "Play",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
@@ -789,7 +789,7 @@
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
-        "x": 140,
+        "x": 90,
         "y": 100,
         "wires": [
             [
