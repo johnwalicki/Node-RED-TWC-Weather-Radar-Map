@@ -18,6 +18,7 @@ Create additional Node-RED flows using the [node-red-contrib-twc-weather](https:
   - [node-red-dashboard](https://flows.nodered.org/node/node-red-dashboard)
   - [node-red-contrib-image-tools](https://flows.nodered.org/node/node-red-contrib-image-tools)
   - [node-red-node-base64](https://flows.nodered.org/node/node-red-node-base64)
+  - [node-red-contrib-ui-multistate-switch](https://flows.nodered.org/node/node-red-contrib-ui-multistate-switch)
 - If you are participating in the [2021 Call for Code](https://developer.ibm.com/callforcode/) you can [register](https://developer.ibm.com/callforcode/tools/weather/) for a time limited TWC API key.
 - Learn more about the TWC APIs used in this Node-RED flow by reading the [TWC Current Conditions API documentation](https://ibm.co/TWCecc)
 - Request a free [Mapbox Developer](https://docs.mapbox.com/) token.
