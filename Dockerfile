@@ -5,7 +5,7 @@ RUN  dnf module install --nodocs -y nodejs:14 python39 --setopt=install_weak_dep
     && dnf install --nodocs -y make gcc gcc-c++  --setopt=install_weak_deps=0 --disableplugin=subscription-manager \
     && dnf clean all --disableplugin=subscription-manager
     
-RUN mkdir -p /opt/app-root/data
+RUN mkdir -p /opt/app-root/data/lib/flows
 WORKDIR /opt/app-root/data
 COPY ./package.json /opt/app-root/data/package.json
 RUN npm install --no-audit --no-update-notifier --no-fund --production
@@ -24,7 +24,7 @@ USER 0
 
 RUN microdnf update -y --nodocs && \
     microdnf install --nodocs -y shadow-utils && \
-    microdnf clean all
+    microdnf clean all && \
 
 RUN groupadd --gid 1001 nodered \
   && useradd --gid nodered --uid 1001 --shell /bin/bash --create-home nodered
