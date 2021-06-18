@@ -35,13 +35,6 @@ USER 1001
 
 COPY --from=build /opt/app-root/data /opt/app-root/data/
 
-USER 0
-
-RUN chgrp -R 0 /opt/app-root/data \
-  && chmod -R g=u /opt/app-root/data
-
-USER 1001
-
 WORKDIR /opt/app-root/data
 
 ENV PORT 1880
