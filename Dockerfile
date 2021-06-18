@@ -24,7 +24,7 @@ USER 0
 
 RUN microdnf update -y --nodocs && \
     microdnf install --nodocs -y shadow-utils && \
-    microdnf clean all && \
+    microdnf clean all
 
 RUN groupadd --gid 1001 nodered \
   && useradd --gid nodered --uid 1001 --shell /bin/bash --create-home nodered
