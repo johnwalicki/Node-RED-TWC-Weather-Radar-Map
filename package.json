@@ -16,7 +16,7 @@
     "author": "John Walicki <johnwalicki@gmail.com>",
     "license": "Apache-2.0",
     "dependencies": {
-        "node-red": "1.3.x",
+        "node-red": "2.x",
         "node-red-contrib-image-tools": "1.x",
         "node-red-dashboard": "2.x",
         "node-red-node-base64": "0.x",
