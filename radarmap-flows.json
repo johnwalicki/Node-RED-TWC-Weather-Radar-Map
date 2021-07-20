@@ -14,6 +14,13 @@
         "info": ""
     },
     {
+        "id": "1f773526.11ba03",
+        "type": "tab",
+        "label": "WorldMap",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "402a1ff0.879a28",
         "type": "ui_base",
         "theme": {
@@ -139,6 +146,25 @@
         "collapse": false
     },
     {
+        "id": "5921804a.453f88",
+        "type": "ui_group",
+        "name": "Zoomable World Map",
+        "tab": "3e17ad44.70e0ea",
+        "order": 3,
+        "disp": true,
+        "width": "16",
+        "collapse": false
+    },
+    {
+        "id": "3e17ad44.70e0ea",
+        "type": "ui_tab",
+        "name": "Worldmap",
+        "icon": "fa-globe",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
         "id": "ee92b6b5.2c19c8",
         "type": "comment",
         "z": "12cdb8c5.b484af",
@@ -154,7 +180,7 @@
         "z": "12cdb8c5.b484af",
         "name": "Weather Company Data - Enhanced Current Conditions https://ibm.co/TWCecc",
         "info": "",
-        "x": 300,
+        "x": 290,
         "y": 40,
         "wires": []
     },
@@ -243,7 +269,7 @@
         "type": "debug",
         "z": "b0be1fc9.070ab8",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -288,11 +314,11 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 810,
+        "x": 790,
         "y": 100,
         "wires": []
     },
@@ -657,7 +683,8 @@
         "y": 300,
         "wires": [
             [
-                "213c5a7.a3a5f26"
+                "213c5a7.a3a5f26",
+                "a917186b.056e18"
             ]
         ]
     },
@@ -937,14 +964,14 @@
         "id": "5c7b852b.5ac31c",
         "type": "function",
         "z": "b0be1fc9.070ab8",
-        "name": "",
+        "name": "Image formatting",
         "func": "msg.payload = \"data:image/jpg;base64,\"+msg.radarmap;\nmsg.payload = msg.radarmap;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1240,
+        "x": 1270,
         "y": 200,
         "wires": [
             [
@@ -1234,11 +1261,11 @@
         "id": "6c7f85ca.c83534",
         "type": "http request",
         "z": "b0be1fc9.070ab8",
-        "name": "Get a MapBox tile 2:0:1",
+        "name": "Get a baselayer tile 2:1:0",
         "method": "GET",
         "ret": "bin",
         "paytoqs": "ignore",
-        "url": "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/2/0/1?access_token={{mapbox}}",
+        "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/2/1/0",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -1255,11 +1282,11 @@
         "id": "a591c63a.b06268",
         "type": "http request",
         "z": "b0be1fc9.070ab8",
-        "name": "Get a MapBox tile 2:1:1",
+        "name": "Get a baselayer tile 2:1:1",
         "method": "GET",
         "ret": "bin",
         "paytoqs": "ignore",
-        "url": "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/2/1/1?access_token={{mapbox}}",
+        "url": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/2/1/1",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -1374,20 +1401,14 @@
         "id": "fdee4fd3.b6b66",
         "type": "inject",
         "z": "b0be1fc9.070ab8",
-        "name": "Set MapBox API token",
-        "props": [
-            {
-                "p": "mapbox",
-                "v": "MAPBOXTOKEN",
-                "vt": "env"
-            }
-        ],
+        "name": "Load baselayer",
+        "props": [],
         "repeat": "",
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 160,
+        "x": 140,
         "y": 500,
         "wires": [
             [
@@ -1598,7 +1619,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 380,
+        "x": 370,
         "y": 700,
         "wires": []
     },
@@ -1648,9 +1669,9 @@
         "id": "8621d9f5.62b8b",
         "type": "comment",
         "z": "b0be1fc9.070ab8",
-        "name": "Load North America baselayer from Mapbox",
+        "name": "Load North America baselayer from ArcGIS",
         "info": "",
-        "x": 490,
+        "x": 480,
         "y": 500,
         "wires": []
     },
@@ -1757,5 +1778,389 @@
                 "de5f5ece.91196"
             ]
         ]
+    },
+    {
+        "id": "a917186b.056e18",
+        "type": "debug",
+        "z": "b0be1fc9.070ab8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "a6a1aefe.353b6",
+        "type": "http request",
+        "z": "b0be1fc9.070ab8",
+        "name": "Get a MapBox tile 2:0:1",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": "ignore",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/2/0/1?access_token={{mapbox}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 1030,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b4da5fdb.c25dc8",
+        "type": "http request",
+        "z": "b0be1fc9.070ab8",
+        "name": "Get a MapBox tile 2:1:1",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": "ignore",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/2/1/1?access_token={{mapbox}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 1030,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b76ea11.3a8ab6",
+        "type": "ui_worldmap",
+        "z": "1f773526.11ba03",
+        "group": "5921804a.453f88",
+        "order": 0,
+        "width": "16",
+        "height": "9",
+        "name": "",
+        "lat": "40",
+        "lon": "-74",
+        "zoom": "5",
+        "layer": "Esri Satellite",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "show",
+        "layers": "show",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "false",
+        "coords": "deg",
+        "showgrid": "true",
+        "allowFileDrop": "false",
+        "path": "/twcmap",
+        "x": 960,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "ec2d1eea.1b508",
+        "type": "debug",
+        "z": "1f773526.11ba03",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "f6413f80.d15558",
+        "type": "inject",
+        "z": "1f773526.11ba03",
+        "name": "Refresh TWC overlay",
+        "props": [
+            {
+                "p": "twcapikey",
+                "v": "TWCAPIKEY",
+                "vt": "env"
+            }
+        ],
+        "repeat": "600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 180,
+        "y": 160,
+        "wires": [
+            [
+                "3ecb2867.e707a8"
+            ]
+        ]
+    },
+    {
+        "id": "753719e5.8ba81",
+        "type": "function",
+        "z": "1f773526.11ba03",
+        "name": "TWC Tile Server overlay",
+        "func": "Array.prototype.except = function(val) {\n    return this.filter(function(x) { return x !== val; });        \n}; \n\nvar curmaptype = flow.get(\"maptype\")||\"satrad\";\nvar tile_ts = msg.payload.seriesInfo[curmaptype].series[0].ts;\n\n// Build and hide an array of maptypes except for the currently selected map\nvar MapTypes = [\"satrad\", \"temp\", \"tempChange\", \"uv\", \"windSpeed\", \"feelsLike\"];\nvar othertilelayers = MapTypes.except(curmaptype);\n\n//msg.payload = { \"command\":{ \"map\": { \"clear\": othertilelayers } } };\n//node.send(msg);\n\nmsg.payload = { \"command\":{\n                    \"map\": {\n                        \"overlay\":curmaptype,\n                        \"name\": curmaptype,\n                        \"url\":\"https://api.weather.com/v3/TileServer/tile/\" + curmaptype +\"?ts=\" + tile_ts +\"&xyz={x}:{y}:{z}&apiKey=\" + msg.twcapikey,\n                        \"opt\":{ \"maxZoom\":13, \"attribution\":\"&copy; weather.com\" },\n                        //\"clear\": othertilelayers\n                    },\n                    //\"showlayer\": curmaptype,\n                    \"hidelayer\": othertilelayers\n                }\n              };\n\nvar newmsg = { \"payload\":{\"command\":{\n                            \"showlayer\": curmaptype,\n                            \"hidelayer\": othertilelayers\n                           }}};\nreturn [msg, newmsg]; ",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 160,
+        "wires": [
+            [
+                "ec2d1eea.1b508",
+                "b76ea11.3a8ab6"
+            ],
+            [
+                "e96d33e.c3502d"
+            ]
+        ]
+    },
+    {
+        "id": "f8da46d7.a7f9a",
+        "type": "ui_multistate_switch",
+        "z": "1f773526.11ba03",
+        "name": "Choose Map Type",
+        "group": "5921804a.453f88",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "stateField": "payload",
+        "enableField": "enable",
+        "rounded": false,
+        "useThemeColors": true,
+        "hideSelectedLabel": false,
+        "options": [
+            {
+                "label": "Radar",
+                "value": "satrad",
+                "valueType": "str",
+                "color": "#009933"
+            },
+            {
+                "label": "Temperature",
+                "value": "temp",
+                "valueType": "str",
+                "color": "#999999"
+            },
+            {
+                "label": "24hr Temp Change",
+                "value": "tempChange",
+                "valueType": "str",
+                "color": "#ff6666"
+            },
+            {
+                "label": "UV",
+                "value": "uv",
+                "valueType": "str",
+                "color": "#009999"
+            },
+            {
+                "label": "Wind",
+                "value": "windSpeed",
+                "valueType": "str",
+                "color": "#cccc00"
+            },
+            {
+                "label": "Feels Like",
+                "value": "feelsLike",
+                "valueType": "str",
+                "color": "#ff33cc"
+            }
+        ],
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "6b5809dc.5451f8"
+            ]
+        ]
+    },
+    {
+        "id": "f68773bf.fe9bd8",
+        "type": "debug",
+        "z": "1f773526.11ba03",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "6b5809dc.5451f8",
+        "type": "change",
+        "z": "1f773526.11ba03",
+        "name": "Set Map Type",
+        "rules": [
+            {
+                "t": "set",
+                "p": "maptype",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "twcapikey",
+                "pt": "msg",
+                "to": "TWCAPIKEY",
+                "tot": "env"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 380,
+        "y": 100,
+        "wires": [
+            [
+                "f68773bf.fe9bd8",
+                "3ecb2867.e707a8"
+            ]
+        ]
+    },
+    {
+        "id": "3ecb2867.e707a8",
+        "type": "http request",
+        "z": "1f773526.11ba03",
+        "name": "Get Tiler Server Info",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.weather.com/v3/TileServer/series/productSet/PPAcore?apiKey={{twcapikey}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 440,
+        "y": 160,
+        "wires": [
+            [
+                "753719e5.8ba81"
+            ]
+        ]
+    },
+    {
+        "id": "5af547a5.4e6f2",
+        "type": "function",
+        "z": "1f773526.11ba03",
+        "name": "TWC Tile Server overlay",
+        "func": "msg.payload = { \"command\":{\"showlayer\":\"satrad\"}};\nreturn msg;\n\nArray.prototype.except = function(val) {\n    return this.filter(function(x) { return x !== val; });        \n}; \n\nvar curmaptype = flow.get(\"maptype\")||\"satrad\";\nvar tile_ts = msg.payload.seriesInfo[curmaptype].series[0].ts;\n\n// Build and hide an array of maptypes except for the currently selected map\nvar MapTypes = [\"satrad\", \"temp\", \"tempChange\", \"uv\", \"windSpeed\", \"feelsLike\"];\nvar othertilelayers = MapTypes.except(curmaptype);\n\nmsg.payload = { \"command\":{\n                    \"map\": {\n                        \"overlay\":curmaptype,\n                        \"name\": curmaptype,\n                        \"url\":\"https://api.weather.com/v3/TileServer/tile/\" + curmaptype +\"?ts=\" + tile_ts +\"&xyz={x}:{y}:{z}&apiKey=\" + msg.twcapikey,\n                        \"opt\":{ \"maxZoom\":13, \"attribution\":\"&copy; weather.com\" },\n                        //\"clear\": othertilelayers\n                    },\n                    \"showlayer\": curmaptype,\n                    \"hidelayer\": othertilelayers\n                }\n              };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 280,
+        "wires": [
+            [
+                "b76ea11.3a8ab6",
+                "82cc65b9.8a86f8"
+            ]
+        ]
+    },
+    {
+        "id": "c97d73d2.c7c728",
+        "type": "ui_button",
+        "z": "1f773526.11ba03",
+        "name": "",
+        "group": "5921804a.453f88",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "show",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 310,
+        "y": 280,
+        "wires": [
+            [
+                "5af547a5.4e6f2"
+            ]
+        ]
+    },
+    {
+        "id": "69ec23f7.5cc6ac",
+        "type": "delay",
+        "z": "1f773526.11ba03",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 640,
+        "y": 200,
+        "wires": [
+            [
+                "b76ea11.3a8ab6",
+                "e96d33e.c3502d"
+            ]
+        ]
+    },
+    {
+        "id": "82cc65b9.8a86f8",
+        "type": "debug",
+        "z": "1f773526.11ba03",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "e96d33e.c3502d",
+        "type": "debug",
+        "z": "1f773526.11ba03",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 260,
+        "wires": []
     }
 ]
