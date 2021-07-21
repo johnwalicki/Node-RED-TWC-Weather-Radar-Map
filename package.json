@@ -21,6 +21,7 @@
         "node-red-dashboard": "2.x",
         "node-red-node-base64": "0.x",
         "node-red-contrib-twc-weather": "0.x",
+	"node-red-contrib-web-worldmap":"2.x",
         "node-red-contrib-ui-multistate-switch": "1.x"
     },
     "node-red": {
