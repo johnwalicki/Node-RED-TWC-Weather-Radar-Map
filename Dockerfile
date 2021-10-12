@@ -4,7 +4,7 @@ LABEL stage=builder
 RUN  dnf module install --nodocs -y nodejs:14 python39 --setopt=install_weak_deps=0 --disableplugin=subscription-manager \
     && dnf install --nodocs -y make gcc gcc-c++  --setopt=install_weak_deps=0 --disableplugin=subscription-manager \
     && dnf clean all --disableplugin=subscription-manager
-    
+
 RUN mkdir -p /opt/app-root/data/lib/flows
 WORKDIR /opt/app-root/data
 COPY ./package.json /opt/app-root/data/package.json
@@ -18,7 +18,7 @@ COPY ./radarmap-flows.json /opt/app-root/data/flows.json
 COPY ./radarmap-flows_cred.json /opt/app-root/data/flows_cred.json
 
 ## Release image
-FROM registry.access.redhat.com/ubi8/nodejs-14-minimal:1-23
+FROM registry.access.redhat.com/ubi8/nodejs-14-minimal:1-26
 
 USER 0
 
