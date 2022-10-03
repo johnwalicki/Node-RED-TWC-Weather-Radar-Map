@@ -3,7 +3,7 @@
 DOCKERHUB_ID:=walicki
 ICR_ID=us.icr.io/devnation-walicki
 IMG_NAME:="node-red-twc-weather-radar-map"
-IMG_VERSION:="2.1"
+IMG_VERSION:="3.1"
 ARCH:="amd64"
 
 # Store the secrets in a .env file  (see ./.env.example)
@@ -15,24 +15,8 @@ MAPBOXTOKEN:=flow now uses ESRI tiles instead of MapBox
 
 # Leave blank for open DockerHub containers
 # CONTAINER_CREDS:=-r "registry.wherever.com:myid:mypw"
-CONTAINER_CREDS:=-r "us.icr.io:iamapikey:<removed for demo>"
 
 default: build run
-
-# Examples of container images built using different techniques
-ubi8-onestage:
-	echo podman build --rm -t $(ICR_ID)/$(IMG_NAME)-ubi8-onestage:$(IMG_VERSION) -f Dockerfile.ubi8.onestage
-	podman build --rm -t $(ICR_ID)/$(IMG_NAME)-ubi8-onestage:$(IMG_VERSION) -f Dockerfile.ubi8.onestage
-
-ubi8-twostage:
-	echo podman build --rm -t $(ICR_ID)/$(IMG_NAME)-ubi8:$(IMG_VERSION) -f Dockerfile.ubi8
-	podman build --rm -t $(ICR_ID)/$(IMG_NAME)-ubi8:$(IMG_VERSION) -f Dockerfile.ubi8
-	podman image prune --filter label=stage=builder --force
-
-minimal:
-	echo podman build --rm -t $(ICR_ID)/$(IMG_NAME)-ubiminimal:$(IMG_VERSION) -f Dockerfile.ubi8minimal
-	podman build --rm -t $(ICR_ID)/$(IMG_NAME)-ubiminimal:$(IMG_VERSION) -f Dockerfile.ubi8minimal
-	podman image prune --filter label=stage=builder --force
 
 build:
 	echo podman build --rm -t $(ICR_ID)/$(IMG_NAME):$(IMG_VERSION) .
@@ -69,6 +53,7 @@ stop:
 
 clean:
 	@podman rmi -f $(ICR_ID)/$(IMG_NAME):$(IMG_VERSION) >/dev/null 2>&1 || :
+	podman image prune --filter label=stage=builder --force
 
 login:
 	ibmcloud login --sso
@@ -81,9 +66,10 @@ code-engine:
 	ibmcloud ce project select -n walicki-code-engine
 	ibmcloud ce application list
 	ibmcloud ce application get -n node-red-twc-weather-maps
-	ibmcloud ce configmap create --name twc-secrets --from-env-file secrets/env.list
-	ibmcloud ce app update --name node-red-twc-weather-maps --image $(ICR_ID)/$(IMG_NAME):$(IMG_VERSION) --port 1880 --max-scale 1 --cpu 0.25 --memory 0.5G --env-from-configmap twc-secrets
-	# ibmcloud ce app create --name node-red-twc-weather-maps --image $(ICR_ID)/$(IMG_NAME):$(IMG_VERSION) --port 1880 --max-scale 1 --cpu 0.25 --memory 0.5G --env TWCAPIKEY=twckey --env-from-configmap twc-secrets
+	# ibmcloud ce configmap create --name twc-secrets --from-env-file secrets/env.list
+	#ibmcloud ce registry create --name ibm-container-registry --server us.icr.io --username iamapikey --password <iamapikey-token>
+	ibmcloud ce app update --name node-red-twc-weather-maps --image $(ICR_ID)/$(IMG_NAME):$(IMG_VERSION) --port 1880 --max-scale 1 --cpu 0.25 --memory 0.5G --env-from-configmap twc-secrets --registry-secret ibm-container-registry
+	# ibmcloud ce app create --name node-red-twc-weather-maps --image $(ICR_ID)/$(IMG_NAME):$(IMG_VERSION) --port 1880 --max-scale 1 --cpu 0.25 --memory 0.5G --env TWCAPIKEY=twckey --env-from-configmap twc-secrets --registry-secret ibm-container-registry
 	ibmcloud ce app logs --name node-red-twc-weather-maps
 
 multiarch:
