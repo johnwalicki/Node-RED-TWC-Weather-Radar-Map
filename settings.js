@@ -273,5 +273,9 @@ module.exports = {
             // To enable the Projects feature, set this value to true
             enabled: false
         }
-    }
+    },
+    runtimeState: {
+        enabled: true,
+        ui: true
+     }
 };
